@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solder-Meter Integrated System | Obour STEM</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #2c3e50; /* Dark Blue */
+            --accent-heat: #e67e22; /* Orange for Soldering */
+            --accent-elec: #3498db; /* Blue for Multimeter */
+            --light: #ecf0f1;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-heat);
+        }
+
+        /* Hero Section */
+        header {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('poster-bg.jpg'); /* Placeholder BG */
+            background-size: cover;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent-heat);
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sections */
+        section {
+            padding: 60px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent-elec);
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        /* Problem / Solution Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .stat-card {
+            background: var(--light);
+            padding: 20px;
+            border-left: 5px solid var(--accent-heat);
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Interactive Tabs for Methods */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: #ddd;
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background: #fff;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Results Charts (CSS based) */
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        .bar-group {
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .bar-bg {
+            background: #eee;
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%; /* JS will animate this */
+            transition: width 1.5s ease-out;
+            display: flex;
+            align-items: center;
+            padding-right: 10px;
+            justify-content: flex-end;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .fill-heat { background: var(--accent-heat); }
+        .fill-elec { background: var(--accent-elec); }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Solder-Meter System</div>
+        <ul>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#methods">Design</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#team">Team</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Solder-Meter Integrated System</h1>
+        <p>An Integrated Soldering-Multimeter Hybrid System for Safe, Low-Cost, and Reliable Electronic Waste Repurposing.</p>
+        <p><em>Obour STEM School - Group 21209</em></p>
+        <a href="#results" class="btn">View Performance Data</a>
+    </header>
+
+    <section id="problem">
+        <div class="grid-2">
+            <div>
+                <h2>The Challenge</h2>
+                <p>Egypt faces escalating challenges in electronic waste mismanagement. [cite_start]According to the Global E-Waste Monitor, limited access to repair tools significantly increases waste accumulation[cite: 322, 323].</p>
+                <div class="stat-card">
+                    <div class="stat-number">690,000 Tonnes</div>
+                    [cite_start]<div>of E-waste generated in Egypt in 2022 alone[cite: 262].</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">High Cost</div>
+                    <div>Schools lack sufficient multimeters and soldering irons for STEM labs.</div>
+                </div>
+            </div>
+            <div>
+                <h2>Our Solution</h2>
+                <p>We propose a "Circular Economy" approach: <strong>The Solder-Meter</strong>. [cite_start]It is a hybrid device that combines a soldering iron and a multimeter into one chassis, built entirely from repurposed e-waste components[cite: 228, 229].</p>
+                <ul>
+                    <li>✅ <strong>Cost-Effective:</strong> Uses salvaged heating elements and casings.</li>
+                    <li>✅ <strong>Integrated:</strong> Test your circuit immediately after soldering.</li>
+                    [cite_start]<li>✅ <strong>Eco-Friendly:</strong> Prevents toxins from entering the soil[cite: 253].</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h2>System Design & Methodology</h2>
+        <p>Click the tabs below to explore how we engineered the two subsystems.</p>
+
+        <div class="tabs">
+            <div class="tab active" onclick="openTab('soldering')">Soldering Subsystem</div>
+            <div class="tab" onclick="openTab('multimeter')">Multimeter Subsystem</div>
+        </div>
+
+        <div id="soldering" class="tab-content active">
+            <h3>Turning Waste into Heat</h3>
+            [cite_start]<p>We retrieved functional heating elements from discarded soldering irons and mounted them into a wooden handle for thermal insulation[cite: 283, 311].</p>
+            <ul>
+                <li><strong>Component:</strong> Salvaged Nichrome Heating Coil.</li>
+                <li><strong>Power Regulation:</strong> Buck Converter used to step down voltage for safety.</li>
+                [cite_start]<li><strong>Thermodynamics:</strong> We calculated the energy required using $Q = mc\Delta T$[cite: 340].</li>
+            </ul>
+            <p><em>Target: Reach melting point of solder (~190°C - 450°C) safely.</em></p>
+        </div>
+
+        <div id="multimeter" class="tab-content">
+            <h3>Precision Measurement</h3>
+            [cite_start]<p>We integrated a measurement circuit into the base chassis, allowing for real-time voltage and resistance checks[cite: 290].</p>
+            <ul>
+                [cite_start]<li><strong>Selector Dial:</strong> Salvaged from broken devices to switch modes[cite: 301].</li>
+                [cite_start]<li><strong>Probe Terminals:</strong> Reusable connectors from discarded meters[cite: 297].</li>
+                <li><strong>Display:</strong> Recycled LCD screen for clear readings.</li>
+            </ul>
+            <p><em>Target: Measure 220V AC with less than ±5% error.</em></p>
+        </div>
+    </section>
+
+    <section id="results">
+        <h2>Performance Results</h2>
+        <p>Our prototype underwent rigorous testing over 5 trials. The data proves the system is both safe and accurate.</p>
+
+        <div class="chart-container">
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Voltage Accuracy (Target: >95%)</span>
+                    <span>99.9%</span>
+                </div>
+                <div class="bar-bg">
+                    [cite_start]<div class="bar-fill fill-elec" style="width: 99.9%">0.091% Error [cite: 361]</div>
+                </div>
+            </div>
+
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Thermal Efficiency</span>
+                    <span>97.9%</span>
+                </div>
+                <div class="bar-bg">
+                    [cite_start]<div class="bar-fill fill-heat" style="width: 97.9%">14,211 J Output [cite: 351]</div>
+                </div>
+            </div>
+
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Max Temperature Stability</span>
+                    <span>466°C</span>
+                </div>
+                <div class="bar-bg">
+                    [cite_start]<div class="bar-fill fill-heat" style="width: 85%">Avg Max: 466°C [cite: 319]</div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <h3>Detailed Data Points</h3>
+        <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse; text-align: center;">
+            <tr style="background:var(--light);">
+                <th>Metric</th>
+                <th>Measured Value</th>
+                <th>Standard / True Value</th>
+                <th>Outcome</th>
+            </tr>
+            <tr>
+                <td>Voltage Reading</td>
+                <td>219.8 V</td>
+                <td>220 V</td>
+                [cite_start]<td><strong>0.091% Relative Error</strong> [cite: 361]</td>
+            </tr>
+            <tr>
+                <td>Power Output</td>
+                <td>2640 W</td>
+                <td>N/A</td>
+                [cite_start]<td>High Efficiency Heating [cite: 337]</td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="team">
+        <h2>The Team</h2>
+        <p><strong>Obour STEM School - Grade 11</strong></p>
+        <div class="grid-2">
+            <div>
+                <ul>
+                    <li><strong>Abdel-Salam Ahmed</strong></li>
+                    <li><strong>Adel Mohamed</strong></li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><strong>Osama Mohamed</strong></li>
+                    <li><strong>Yassen Sameh</strong></li>
+                </ul>
+            </div>
+        </div>
+        [cite_start]<p style="margin-top: 20px; font-size: 0.9rem;"><em>Supervised by: Dr. Ahmed Abd Elmaksoud & Mr. Ahmed Morsi [cite: 423]</em></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Solder-Meter Integrated System. All Rights Reserved.</p>
+        <p><em>Submitted for the Capstone Exhibition.</em></p>
+    </footer>
+
+    <script>
+        // Tab Functionality
+        function openTab(tabName) {
+            // Hide all tab content
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].style.display = "none";
+                contents[i].classList.remove("active");
+            }
+            // Remove active class from buttons
+            var tabs = document.getElementsByClassName("tab");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.backgroundColor = "#ddd";
+                tabs[i].style.color = "#333";
+            }
+            
+            // Show the specific tab content
+            document.getElementById(tabName).style.display = "block";
+            
+            // Highlight the button (Style logic handled here for simplicity)
+            event.currentTarget.style.backgroundColor = "#2c3e50"; 
+            event.currentTarget.style.color = "white";
+        }
+
+        // Simple Animation trigger for bars on load
+        window.onload = function() {
+            const bars = document.querySelectorAll('.bar-fill');
+            bars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0'; // Reset to 0
+                setTimeout(() => {
+                    bar.style.width = width; // Animate to target
+                }, 500);
+            });
+        };
+    </script>
+</body>
+</html>
